@@ -75,51 +75,51 @@ export default function AttendancePage() {
 
     return (
         <div className="space-y-6" dir="rtl">
-            <div className="flex items-center justify-between">
-                <h1 className="text-2xl font-bold text-gray-900">الحضور والغياب</h1>
-                <button
-                    onClick={() => setShowForm(true)}
-                    className="flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 text-sm font-medium"
-                >
-                    <Plus size={16} /> تسجيل حضور
+            <div className="flex flex-wrap items-center justify-between gap-3">
+                <div>
+                    <h1 className="text-2xl font-bold text-slate-900">الحضور والغياب</h1>
+                    <p className="mt-1 text-sm text-slate-500">متابعة حضور الموظفين اليومي</p>
+                </div>
+                <button onClick={() => setShowForm(true)} className="btn-primary">
+                    <Plus size={18} /> تسجيل حضور
                 </button>
             </div>
 
             {/* Date nav */}
-            <div className="flex items-center gap-3">
-                <button onClick={prevDay} className="p-2 hover:bg-gray-100 rounded-lg border">
+            <div className="card flex flex-wrap items-center gap-3 p-4">
+                <button onClick={prevDay} className="rounded-lg border border-slate-300 p-2 text-slate-600 hover:bg-slate-50">
                     <ChevronRight size={18} />
                 </button>
                 <input
                     type="date"
                     value={date}
                     onChange={(e) => { setDate(e.target.value); setPage(1); }}
-                    className="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="input w-auto"
                 />
-                <button onClick={nextDay} className="p-2 hover:bg-gray-100 rounded-lg border">
+                <button onClick={nextDay} className="rounded-lg border border-slate-300 p-2 text-slate-600 hover:bg-slate-50">
                     <ChevronLeft size={18} />
                 </button>
-                <div className="relative flex-1 max-w-xs">
-                    <Search size={16} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400" />
+                <div className="relative max-w-xs flex-1">
+                    <Search size={18} className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400" />
                     <input
                         type="text"
                         placeholder="ابحث بالاسم..."
                         value={search}
                         onChange={(e) => setSearch(e.target.value)}
-                        className="w-full border border-gray-300 rounded-lg pr-9 pl-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="input pr-10"
                     />
                 </div>
             </div>
 
             {/* Stats */}
             {records.length > 0 && (
-                <div className="grid grid-cols-3 sm:grid-cols-6 gap-3">
+                <div className="grid grid-cols-3 gap-3 sm:grid-cols-6">
                     {Object.entries(statusLabels).map(([key, label]) => {
                         const count = records.filter((r: any) => r.status === key).length;
                         return (
-                            <div key={key} className="bg-white rounded-xl border p-3 text-center">
-                                <div className="text-2xl font-bold text-gray-900">{count}</div>
-                                <div className={`text-xs mt-1 px-2 py-0.5 rounded-full inline-block ${statusColors[key]}`}>{label}</div>
+                            <div key={key} className="card p-4 text-center">
+                                <div className="text-2xl font-bold text-slate-900">{count}</div>
+                                <div className={`mt-1.5 inline-block rounded-full px-2 py-0.5 text-xs font-medium ${statusColors[key]}`}>{label}</div>
                             </div>
                         );
                     })}
@@ -127,39 +127,39 @@ export default function AttendancePage() {
             )}
 
             {/* Table */}
-            <div className="bg-white rounded-xl shadow-sm border overflow-hidden">
+            <div className="card overflow-hidden">
                 {isLoading ? (
-                    <div className="p-12 text-center text-gray-500">جاري التحميل...</div>
+                    <div className="p-12 text-center text-slate-400">جاري التحميل...</div>
                 ) : filtered.length === 0 ? (
-                    <div className="p-12 text-center text-gray-500">لا توجد سجلات لهذا اليوم</div>
+                    <div className="p-12 text-center text-slate-400">لا توجد سجلات لهذا اليوم</div>
                 ) : (
                     <table className="w-full text-sm">
-                        <thead className="bg-gray-50 border-b">
+                        <thead className="border-b border-slate-200 bg-slate-50/80">
                             <tr>
-                                <th className="text-right px-4 py-3 text-gray-600 font-medium">الموظف</th>
-                                <th className="text-right px-4 py-3 text-gray-600 font-medium hidden md:table-cell">القسم</th>
-                                <th className="text-right px-4 py-3 text-gray-600 font-medium">الحالة</th>
-                                <th className="text-right px-4 py-3 text-gray-600 font-medium hidden sm:table-cell">الدخول</th>
-                                <th className="text-right px-4 py-3 text-gray-600 font-medium hidden sm:table-cell">الخروج</th>
-                                <th className="text-right px-4 py-3 text-gray-600 font-medium hidden lg:table-cell">وقت العمل</th>
+                                <th className="px-4 py-3.5 text-right text-xs font-semibold uppercase tracking-wide text-slate-500">الموظف</th>
+                                <th className="hidden px-4 py-3.5 text-right text-xs font-semibold uppercase tracking-wide text-slate-500 md:table-cell">القسم</th>
+                                <th className="px-4 py-3.5 text-right text-xs font-semibold uppercase tracking-wide text-slate-500">الحالة</th>
+                                <th className="hidden px-4 py-3.5 text-right text-xs font-semibold uppercase tracking-wide text-slate-500 sm:table-cell">الدخول</th>
+                                <th className="hidden px-4 py-3.5 text-right text-xs font-semibold uppercase tracking-wide text-slate-500 sm:table-cell">الخروج</th>
+                                <th className="hidden px-4 py-3.5 text-right text-xs font-semibold uppercase tracking-wide text-slate-500 lg:table-cell">وقت العمل</th>
                             </tr>
                         </thead>
-                        <tbody className="divide-y divide-gray-100">
+                        <tbody className="divide-y divide-slate-100">
                             {filtered.map((r: any) => (
-                                <tr key={r.id} className="hover:bg-gray-50">
+                                <tr key={r.id} className="transition-colors hover:bg-slate-50">
                                     <td className="px-4 py-3">
-                                        <div className="font-medium text-gray-900">{r.employee?.first_name} {r.employee?.last_name}</div>
-                                        <div className="text-xs text-gray-500">{r.employee?.employee_number}</div>
+                                        <div className="font-medium text-slate-900">{r.employee?.first_name} {r.employee?.last_name}</div>
+                                        <div className="text-xs text-slate-500">{r.employee?.employee_number}</div>
                                     </td>
-                                    <td className="px-4 py-3 text-gray-600 hidden md:table-cell">{r.employee?.department?.name ?? "-"}</td>
+                                    <td className="hidden px-4 py-3 text-slate-600 md:table-cell">{r.employee?.department?.name ?? "-"}</td>
                                     <td className="px-4 py-3">
-                                        <span className={`inline-flex px-2 py-1 rounded-full text-xs font-medium ${statusColors[r.status] ?? "bg-gray-100 text-gray-800"}`}>
+                                        <span className={`inline-flex rounded-full px-2.5 py-1 text-xs font-medium ${statusColors[r.status] ?? "bg-slate-100 text-slate-700"}`}>
                                             {statusLabels[r.status] ?? r.status}
                                         </span>
                                     </td>
-                                    <td className="px-4 py-3 text-gray-600 hidden sm:table-cell">{r.check_in ?? "-"}</td>
-                                    <td className="px-4 py-3 text-gray-600 hidden sm:table-cell">{r.check_out ?? "-"}</td>
-                                    <td className="px-4 py-3 text-gray-600 hidden lg:table-cell">
+                                    <td className="hidden px-4 py-3 text-slate-600 sm:table-cell">{r.check_in ?? "-"}</td>
+                                    <td className="hidden px-4 py-3 text-slate-600 sm:table-cell">{r.check_out ?? "-"}</td>
+                                    <td className="hidden px-4 py-3 text-slate-600 lg:table-cell">
                                         {r.work_minutes ? `${Math.floor(r.work_minutes / 60)}س ${r.work_minutes % 60}د` : "-"}
                                     </td>
                                 </tr>
@@ -168,11 +168,11 @@ export default function AttendancePage() {
                     </table>
                 )}
                 {meta.last_page > 1 && (
-                    <div className="flex items-center justify-between px-4 py-3 border-t">
-                        <span className="text-sm text-gray-600">{meta.from}-{meta.to} من {meta.total}</span>
+                    <div className="flex items-center justify-between border-t border-slate-100 px-4 py-3">
+                        <span className="text-sm text-slate-500">{meta.from}-{meta.to} من {meta.total}</span>
                         <div className="flex gap-2">
-                            <button disabled={page <= 1} onClick={() => setPage(p => p - 1)} className="px-3 py-1 border rounded text-sm disabled:opacity-40 hover:bg-gray-50">السابق</button>
-                            <button disabled={page >= meta.last_page} onClick={() => setPage(p => p + 1)} className="px-3 py-1 border rounded text-sm disabled:opacity-40 hover:bg-gray-50">التالي</button>
+                            <button disabled={page <= 1} onClick={() => setPage(p => p - 1)} className="rounded-lg border border-slate-300 px-3 py-1.5 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50 disabled:opacity-40">السابق</button>
+                            <button disabled={page >= meta.last_page} onClick={() => setPage(p => p + 1)} className="rounded-lg border border-slate-300 px-3 py-1.5 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50 disabled:opacity-40">التالي</button>
                         </div>
                     </div>
                 )}
@@ -180,13 +180,13 @@ export default function AttendancePage() {
 
             {/* Add Form Modal */}
             {showForm && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40" dir="rtl">
-                    <div className="bg-white rounded-2xl shadow-xl w-full max-w-md p-6">
-                        <h2 className="text-lg font-bold mb-4">تسجيل حضور</h2>
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 p-4 backdrop-blur-sm" dir="rtl" onClick={() => setShowForm(false)}>
+                    <div className="w-full max-w-md rounded-2xl bg-white p-6 shadow-2xl" onClick={(e) => e.stopPropagation()}>
+                        <h2 className="mb-5 text-lg font-bold text-slate-900">تسجيل حضور</h2>
                         <form onSubmit={(e) => { e.preventDefault(); saveMutation.mutate(form); }} className="space-y-4">
                             <div>
-                                <label className="block text-xs font-medium text-gray-600 mb-1">الموظف *</label>
-                                <select required className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                <label className="mb-1.5 block text-sm font-medium text-slate-700">الموظف *</label>
+                                <select required className="input"
                                     value={form.employee_id} onChange={(e) => setForm(f => ({ ...f, employee_id: e.target.value }))}>
                                     <option value="">اختر موظف</option>
                                     {employees.map((emp: any) => (
@@ -195,37 +195,37 @@ export default function AttendancePage() {
                                 </select>
                             </div>
                             <div>
-                                <label className="block text-xs font-medium text-gray-600 mb-1">التاريخ *</label>
-                                <input type="date" required className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                <label className="mb-1.5 block text-sm font-medium text-slate-700">التاريخ *</label>
+                                <input type="date" required className="input"
                                     value={form.date} onChange={(e) => setForm(f => ({ ...f, date: e.target.value }))} />
                             </div>
                             <div>
-                                <label className="block text-xs font-medium text-gray-600 mb-1">الحالة *</label>
-                                <select className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                <label className="mb-1.5 block text-sm font-medium text-slate-700">الحالة *</label>
+                                <select className="input"
                                     value={form.status} onChange={(e) => setForm(f => ({ ...f, status: e.target.value }))}>
                                     {Object.entries(statusLabels).map(([k, v]) => <option key={k} value={k}>{v}</option>)}
                                 </select>
                             </div>
                             <div className="grid grid-cols-2 gap-3">
                                 <div>
-                                    <label className="block text-xs font-medium text-gray-600 mb-1">وقت الدخول</label>
-                                    <input type="time" className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    <label className="mb-1.5 block text-sm font-medium text-slate-700">وقت الدخول</label>
+                                    <input type="time" className="input"
                                         value={form.check_in} onChange={(e) => setForm(f => ({ ...f, check_in: e.target.value }))} />
                                 </div>
                                 <div>
-                                    <label className="block text-xs font-medium text-gray-600 mb-1">وقت الخروج</label>
-                                    <input type="time" className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    <label className="mb-1.5 block text-sm font-medium text-slate-700">وقت الخروج</label>
+                                    <input type="time" className="input"
                                         value={form.check_out} onChange={(e) => setForm(f => ({ ...f, check_out: e.target.value }))} />
                                 </div>
                             </div>
                             <div>
-                                <label className="block text-xs font-medium text-gray-600 mb-1">ملاحظات</label>
-                                <textarea className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" rows={2}
+                                <label className="mb-1.5 block text-sm font-medium text-slate-700">ملاحظات</label>
+                                <textarea className="input" rows={2}
                                     value={form.notes} onChange={(e) => setForm(f => ({ ...f, notes: e.target.value }))} />
                             </div>
-                            <div className="flex gap-3 justify-end">
-                                <button type="button" onClick={() => setShowForm(false)} className="px-5 py-2 border border-gray-300 rounded-lg text-sm hover:bg-gray-50">إلغاء</button>
-                                <button type="submit" disabled={saveMutation.isPending} className="px-5 py-2 bg-blue-600 text-white rounded-lg text-sm hover:bg-blue-700 disabled:opacity-50">
+                            <div className="flex justify-end gap-3 pt-2">
+                                <button type="button" onClick={() => setShowForm(false)} className="btn-ghost">إلغاء</button>
+                                <button type="submit" disabled={saveMutation.isPending} className="btn-primary">
                                     {saveMutation.isPending ? "جاري الحفظ..." : "حفظ"}
                                 </button>
                             </div>

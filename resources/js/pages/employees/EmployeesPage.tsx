@@ -30,33 +30,33 @@ export default function EmployeesPage() {
 
     return (
         <div className="space-y-6" dir="rtl">
-            <div className="flex items-center justify-between">
-                <h1 className="text-2xl font-bold text-gray-900">الموظفون</h1>
-                <button
-                    onClick={() => setShowForm(true)}
-                    className="flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium"
-                >
-                    <Plus size={16} />
+            <div className="flex flex-wrap items-center justify-between gap-3">
+                <div>
+                    <h1 className="text-2xl font-bold text-slate-900">الموظفون</h1>
+                    <p className="mt-1 text-sm text-slate-500">إدارة بيانات الموظفين في المؤسسة</p>
+                </div>
+                <button onClick={() => setShowForm(true)} className="btn-primary">
+                    <Plus size={18} />
                     إضافة موظف
                 </button>
             </div>
 
             {/* Filters */}
-            <div className="flex gap-3 flex-wrap">
-                <div className="relative flex-1 min-w-48">
-                    <Search size={16} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400" />
+            <div className="card flex flex-wrap gap-3 p-4">
+                <div className="relative min-w-48 flex-1">
+                    <Search size={18} className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400" />
                     <input
                         type="text"
                         placeholder="ابحث بالاسم أو البريد أو الرقم..."
                         value={search}
                         onChange={(e) => { setSearch(e.target.value); setPage(1); }}
-                        className="w-full border border-gray-300 rounded-lg pr-9 pl-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="input pr-10"
                     />
                 </div>
                 <select
                     value={statusFilter}
                     onChange={(e) => { setStatusFilter(e.target.value); setPage(1); }}
-                    className="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="input w-auto"
                 >
                     <option value="">كل الحالات</option>
                     <option value="active">نشط</option>
@@ -67,51 +67,60 @@ export default function EmployeesPage() {
             </div>
 
             {/* Table */}
-            <div className="bg-white rounded-xl shadow-sm border overflow-hidden">
+            <div className="card overflow-hidden">
                 {isLoading ? (
-                    <div className="p-12 text-center text-gray-500">جاري التحميل...</div>
+                    <div className="p-12 text-center text-slate-400">جاري التحميل...</div>
                 ) : employees.length === 0 ? (
-                    <div className="p-12 text-center text-gray-500">لا يوجد موظفون</div>
+                    <div className="p-12 text-center text-slate-400">لا يوجد موظفون</div>
                 ) : (
                     <table className="w-full text-sm">
-                        <thead className="bg-gray-50 border-b">
+                        <thead className="border-b border-slate-200 bg-slate-50/80">
                             <tr>
-                                <th className="text-right px-4 py-3 text-gray-600 font-medium">الموظف</th>
-                                <th className="text-right px-4 py-3 text-gray-600 font-medium hidden md:table-cell">القسم</th>
-                                <th className="text-right px-4 py-3 text-gray-600 font-medium hidden lg:table-cell">المسمى الوظيفي</th>
-                                <th className="text-right px-4 py-3 text-gray-600 font-medium">الحالة</th>
-                                <th className="text-right px-4 py-3 text-gray-600 font-medium hidden lg:table-cell">تاريخ التوظيف</th>
-                                <th className="px-4 py-3"></th>
+                                <th className="px-4 py-3.5 text-right text-xs font-semibold uppercase tracking-wide text-slate-500">الموظف</th>
+                                <th className="hidden px-4 py-3.5 text-right text-xs font-semibold uppercase tracking-wide text-slate-500 md:table-cell">القسم</th>
+                                <th className="hidden px-4 py-3.5 text-right text-xs font-semibold uppercase tracking-wide text-slate-500 lg:table-cell">المسمى الوظيفي</th>
+                                <th className="px-4 py-3.5 text-right text-xs font-semibold uppercase tracking-wide text-slate-500">الحالة</th>
+                                <th className="hidden px-4 py-3.5 text-right text-xs font-semibold uppercase tracking-wide text-slate-500 lg:table-cell">تاريخ التوظيف</th>
+                                <th className="px-4 py-3.5"></th>
                             </tr>
                         </thead>
-                        <tbody className="divide-y divide-gray-100">
+                        <tbody className="divide-y divide-slate-100">
                             {employees.map((emp: any) => (
-                                <tr key={emp.id} className="hover:bg-gray-50">
+                                <tr key={emp.id} className="transition-colors hover:bg-slate-50">
                                     <td className="px-4 py-3">
-                                        <div className="font-medium text-gray-900">{emp.first_name} {emp.last_name}</div>
-                                        <div className="text-gray-500 text-xs">{emp.employee_number} • {emp.email}</div>
+                                        <div className="flex items-center gap-3">
+                                            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-brand-100 text-sm font-semibold text-brand-700">
+                                                {(emp.first_name || "؟").charAt(0)}
+                                            </div>
+                                            <div className="min-w-0">
+                                                <div className="font-medium text-slate-900">{emp.first_name} {emp.last_name}</div>
+                                                <div className="truncate text-xs text-slate-500">{emp.employee_number} • {emp.email}</div>
+                                            </div>
+                                        </div>
                                     </td>
-                                    <td className="px-4 py-3 text-gray-600 hidden md:table-cell">{emp.department?.name ?? "-"}</td>
-                                    <td className="px-4 py-3 text-gray-600 hidden lg:table-cell">{emp.job_title}</td>
+                                    <td className="hidden px-4 py-3 text-slate-600 md:table-cell">{emp.department?.name ?? "-"}</td>
+                                    <td className="hidden px-4 py-3 text-slate-600 lg:table-cell">{emp.job_title}</td>
                                     <td className="px-4 py-3">
-                                        <span className={`inline-flex px-2 py-1 rounded-full text-xs font-medium ${statusColors[emp.status] ?? ""}`}>
+                                        <span className={`inline-flex rounded-full px-2.5 py-1 text-xs font-medium ${statusColors[emp.status] ?? ""}`}>
                                             {statusLabels[emp.status] ?? emp.status}
                                         </span>
                                     </td>
-                                    <td className="px-4 py-3 text-gray-600 hidden lg:table-cell">{formatDate(emp.hire_date)}</td>
+                                    <td className="hidden px-4 py-3 text-slate-600 lg:table-cell">{formatDate(emp.hire_date)}</td>
                                     <td className="px-4 py-3">
-                                        <div className="flex items-center gap-2 justify-end">
+                                        <div className="flex items-center justify-end gap-1">
                                             <button
                                                 onClick={() => navigate(`/employees/${emp.id}`)}
-                                                className="p-1.5 text-blue-600 hover:bg-blue-50 rounded"
+                                                className="rounded-lg p-2 text-brand-600 transition-colors hover:bg-brand-50"
+                                                title="عرض"
                                             >
-                                                <Eye size={15} />
+                                                <Eye size={16} />
                                             </button>
                                             <button
                                                 onClick={() => confirm("هل أنت متأكد؟") && deleteMutation.mutate(emp.id)}
-                                                className="p-1.5 text-red-600 hover:bg-red-50 rounded"
+                                                className="rounded-lg p-2 text-red-600 transition-colors hover:bg-red-50"
+                                                title="حذف"
                                             >
-                                                <Trash2 size={15} />
+                                                <Trash2 size={16} />
                                             </button>
                                         </div>
                                     </td>
@@ -123,22 +132,22 @@ export default function EmployeesPage() {
 
                 {/* Pagination */}
                 {meta.last_page > 1 && (
-                    <div className="flex items-center justify-between px-4 py-3 border-t">
-                        <span className="text-sm text-gray-600">
+                    <div className="flex items-center justify-between border-t border-slate-100 px-4 py-3">
+                        <span className="text-sm text-slate-500">
                             {meta.from}-{meta.to} من {meta.total} موظف
                         </span>
                         <div className="flex gap-2">
                             <button
                                 disabled={page <= 1}
                                 onClick={() => setPage(p => p - 1)}
-                                className="px-3 py-1 border rounded text-sm disabled:opacity-40 hover:bg-gray-50"
+                                className="rounded-lg border border-slate-300 px-3 py-1.5 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50 disabled:opacity-40"
                             >
                                 السابق
                             </button>
                             <button
                                 disabled={page >= meta.last_page}
                                 onClick={() => setPage(p => p + 1)}
-                                className="px-3 py-1 border rounded text-sm disabled:opacity-40 hover:bg-gray-50"
+                                className="rounded-lg border border-slate-300 px-3 py-1.5 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50 disabled:opacity-40"
                             >
                                 التالي
                             </button>
