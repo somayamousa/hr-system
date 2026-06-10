@@ -10,8 +10,12 @@ use Illuminate\Http\Request;
 
 class AttendanceController extends Controller
 {
+    private const MAX_PER_PAGE = 100;
+
     public function index(Request $request)
     {
+        $perPage = min((int) ($request->per_page ?? 30), self::MAX_PER_PAGE);
+
         $query = Attendance::with('employee.department')
             ->when($request->employee_id, fn($q) => $q->where('employee_id', $request->employee_id))
             ->when($request->date, fn($q) => $q->whereDate('date', $request->date))
@@ -20,7 +24,7 @@ class AttendanceController extends Controller
             ->when($request->status, fn($q) => $q->where('status', $request->status))
             ->orderBy('date', 'desc');
 
-        return response()->json($query->paginate($request->per_page ?? 30));
+        return response()->json($query->paginate($perPage));
     }
 
     public function store(Request $request)

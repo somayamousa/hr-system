@@ -9,8 +9,9 @@ class Employee extends Model
 {
     use SoftDeletes;
 
+    // employee_number excluded from fillable — generated internally only
     protected $fillable = [
-        'employee_number', 'first_name', 'last_name', 'email', 'phone',
+        'first_name', 'last_name', 'email', 'phone',
         'date_of_birth', 'gender', 'national_id', 'nationality', 'address',
         'emergency_contact_name', 'emergency_contact_phone', 'photo',
         'hire_date', 'employment_type', 'status', 'job_title', 'position',
@@ -22,6 +23,13 @@ class Employee extends Model
         'hire_date' => 'date',
         'basic_salary' => 'decimal:2',
     ];
+
+    public const SENSITIVE_FIELDS = ['basic_salary', 'national_id', 'date_of_birth', 'emergency_contact_phone'];
+
+    public function toSafeArray(): array
+    {
+        return $this->makeHidden(self::SENSITIVE_FIELDS)->toArray();
+    }
 
     public function department()
     {

@@ -16,13 +16,13 @@ class LeaveTypeController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'name'                => 'required|string|max:100',
-            'name_ar'             => 'required|string|max:100',
-            'max_days_per_year'   => 'integer|min:0',
-            'is_paid'             => 'boolean',
-            'requires_approval'   => 'boolean',
-            'color'               => 'string|max:7',
-            'is_active'           => 'boolean',
+            'name'              => 'required|string|max:100',
+            'name_ar'           => 'required|string|max:100',
+            'max_days_per_year' => 'integer|min:0',
+            'is_paid'           => 'boolean',
+            'requires_approval' => 'boolean',
+            'color'             => ['string', 'regex:/^#[0-9A-Fa-f]{6}$/'],
+            'is_active'         => 'boolean',
         ]);
 
         return response()->json(LeaveType::create($validated), 201);
@@ -41,7 +41,7 @@ class LeaveTypeController extends Controller
             'max_days_per_year' => 'integer|min:0',
             'is_paid'           => 'boolean',
             'requires_approval' => 'boolean',
-            'color'             => 'string|max:7',
+            'color'             => ['string', 'regex:/^#[0-9A-Fa-f]{6}$/'],
             'is_active'         => 'boolean',
         ]);
 

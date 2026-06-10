@@ -9,19 +9,29 @@ use Illuminate\Http\Request;
 
 class LeaveRequestController extends Controller
 {
+    private const MAX_PER_PAGE = 100;
+
     public function index(Request $request)
     {
+        $user = $request->user();
+        $isAdminOrHr = $user->hasAnyRole(['admin', 'hr']);
+        $perPage = min((int) ($request->per_page ?? 15), self::MAX_PER_PAGE);
+
         $query = LeaveRequest::with(['employee.department', 'leaveType', 'approver'])
-            ->when($request->employee_id, fn($q) => $q->where('employee_id', $request->employee_id))
+            ->when(! $isAdminOrHr && $user->employee, fn($q) => $q->where('employee_id', $user->employee->id))
+            ->when($isAdminOrHr && $request->employee_id, fn($q) => $q->where('employee_id', $request->employee_id))
             ->when($request->status, fn($q) => $q->where('status', $request->status))
             ->when($request->year, fn($q) => $q->whereYear('start_date', $request->year))
             ->latest();
 
-        return response()->json($query->paginate($request->per_page ?? 15));
+        return response()->json($query->paginate($perPage));
     }
 
     public function store(Request $request)
     {
+        $user = $request->user();
+        $isAdminOrHr = $user->hasAnyRole(['admin', 'hr']);
+
         $validated = $request->validate([
             'employee_id'   => 'required|exists:employees,id',
             'leave_type_id' => 'required|exists:leave_types,id',
@@ -29,6 +39,11 @@ class LeaveRequestController extends Controller
             'end_date'      => 'required|date|after_or_equal:start_date',
             'reason'        => 'nullable|string',
         ]);
+
+        // non-admin/hr can only submit leave for themselves
+        if (! $isAdminOrHr && $user->employee?->id !== (int) $validated['employee_id']) {
+            return response()->json(['message' => 'لا يمكنك تقديم إجازة باسم موظف آخر'], 403);
+        }
 
         $start = Carbon::parse($validated['start_date']);
         $end   = Carbon::parse($validated['end_date']);
