@@ -11,8 +11,12 @@ class ContractController extends Controller
 {
     public function index(Request $request)
     {
+        $user = $request->user();
+        $isAdminOrHr = $user->hasAnyRole(['admin', 'hr']);
+
         $query = Contract::with('employee')
-            ->when($request->employee_id, fn($q) => $q->where('employee_id', $request->employee_id))
+            ->when(! $isAdminOrHr && $user->employee, fn($q) => $q->where('employee_id', $user->employee->id))
+            ->when($isAdminOrHr && $request->employee_id, fn($q) => $q->where('employee_id', $request->employee_id))
             ->when($request->status, fn($q) => $q->where('status', $request->status));
 
         return response()->json($query->latest()->paginate($request->per_page ?? 15));
@@ -41,8 +45,13 @@ class ContractController extends Controller
         return response()->json($contract->load('employee'), 201);
     }
 
-    public function show(Contract $contract)
+    public function show(Request $request, Contract $contract)
     {
+        $user = $request->user();
+        if (! $user->hasAnyRole(['admin', 'hr']) && $user->employee?->id !== $contract->employee_id) {
+            return response()->json(['message' => 'غير مصرح'], 403);
+        }
+
         return response()->json($contract->load('employee'));
     }
 
