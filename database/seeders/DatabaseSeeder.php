@@ -20,14 +20,14 @@ class DatabaseSeeder extends Seeder
         $admin = User::create([
             'name' => 'مدير النظام',
             'email' => 'admin@hr-system.com',
-            'password' => Hash::make('password'),
+            'password' => Hash::make(env('ADMIN_PASSWORD', 'Ch@ngeMe!2024')),
         ]);
         $admin->assignRole($adminRole);
 
         $hr = User::create([
             'name' => 'موظف HR',
             'email' => 'hr@hr-system.com',
-            'password' => Hash::make('password'),
+            'password' => Hash::make(env('HR_PASSWORD', 'Ch@ngeMe!2024')),
         ]);
         $hr->assignRole($hrRole);
 
