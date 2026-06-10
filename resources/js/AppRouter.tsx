@@ -5,6 +5,8 @@ import Layout from "./components/Layout";
 import EmployeesPage from "./pages/employees/EmployeesPage";
 import EmployeeDetailPage from "./pages/employees/EmployeeDetailPage";
 import DepartmentsPage from "./pages/DepartmentsPage";
+import AttendancePage from "./pages/AttendancePage";
+import LeaveRequestsPage from "./pages/LeaveRequestsPage";
 
 function PrivateRoute({ children }: { children: React.ReactNode }) {
     const token = localStorage.getItem("token");
@@ -27,6 +29,8 @@ export default function AppRouter() {
                 <Route path="employees" element={<EmployeesPage />} />
                 <Route path="employees/:id" element={<EmployeeDetailPage />} />
                 <Route path="departments" element={<DepartmentsPage />} />
+                <Route path="attendance" element={<AttendancePage />} />
+                <Route path="leave-requests" element={<LeaveRequestsPage />} />
             </Route>
         </Routes>
     );

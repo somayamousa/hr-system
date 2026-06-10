@@ -1,6 +1,6 @@
 ﻿import React, { useState } from "react";
 import { Outlet, NavLink, useNavigate } from "react-router-dom";
-import { Users, Building2, LogOut, Menu, X } from "lucide-react";
+import { Users, Building2, LogOut, Menu, X, Clock, CalendarDays } from "lucide-react";
 import api from "../lib/axios";
 
 export default function Layout() {
@@ -18,6 +18,8 @@ export default function Layout() {
     const navItems = [
         { to: "/employees", label: "الموظفون", icon: Users },
         { to: "/departments", label: "الأقسام", icon: Building2 },
+        { to: "/attendance", label: "الحضور والغياب", icon: Clock },
+        { to: "/leave-requests", label: "طلبات الإجازة", icon: CalendarDays },
     ];
 
     return (
