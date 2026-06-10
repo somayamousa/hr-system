@@ -67,26 +67,26 @@ export default function LeaveRequestsPage() {
     const requests = data?.data ?? [];
     const meta = data?.meta ?? {};
 
-    const cls = "w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500";
+    const cls = "input";
 
     return (
         <div className="space-y-6" dir="rtl">
-            <div className="flex items-center justify-between">
-                <h1 className="text-2xl font-bold text-gray-900">طلبات الإجازة</h1>
-                <button
-                    onClick={() => setShowForm(true)}
-                    className="flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 text-sm font-medium"
-                >
-                    <Plus size={16} /> طلب إجازة
+            <div className="flex flex-wrap items-center justify-between gap-3">
+                <div>
+                    <h1 className="text-2xl font-bold text-slate-900">طلبات الإجازة</h1>
+                    <p className="mt-1 text-sm text-slate-500">مراجعة طلبات الإجازة والموافقة عليها</p>
+                </div>
+                <button onClick={() => setShowForm(true)} className="btn-primary">
+                    <Plus size={18} /> طلب إجازة
                 </button>
             </div>
 
             {/* Filter */}
-            <div className="flex gap-3">
+            <div className="card flex gap-3 p-4">
                 <select
                     value={statusFilter}
                     onChange={(e) => { setStatusFilter(e.target.value); setPage(1); }}
-                    className="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="input w-auto"
                 >
                     <option value="">كل الحالات</option>
                     <option value="pending">قيد الانتظار</option>
@@ -96,56 +96,56 @@ export default function LeaveRequestsPage() {
             </div>
 
             {/* Table */}
-            <div className="bg-white rounded-xl shadow-sm border overflow-hidden">
+            <div className="card overflow-hidden">
                 {isLoading ? (
-                    <div className="p-12 text-center text-gray-500">جاري التحميل...</div>
+                    <div className="p-12 text-center text-slate-400">جاري التحميل...</div>
                 ) : requests.length === 0 ? (
-                    <div className="p-12 text-center text-gray-500">لا توجد طلبات</div>
+                    <div className="p-12 text-center text-slate-400">لا توجد طلبات</div>
                 ) : (
                     <table className="w-full text-sm">
-                        <thead className="bg-gray-50 border-b">
+                        <thead className="border-b border-slate-200 bg-slate-50/80">
                             <tr>
-                                <th className="text-right px-4 py-3 text-gray-600 font-medium">الموظف</th>
-                                <th className="text-right px-4 py-3 text-gray-600 font-medium hidden md:table-cell">نوع الإجازة</th>
-                                <th className="text-right px-4 py-3 text-gray-600 font-medium">من</th>
-                                <th className="text-right px-4 py-3 text-gray-600 font-medium">إلى</th>
-                                <th className="text-right px-4 py-3 text-gray-600 font-medium hidden sm:table-cell">الأيام</th>
-                                <th className="text-right px-4 py-3 text-gray-600 font-medium">الحالة</th>
-                                <th className="px-4 py-3"></th>
+                                <th className="px-4 py-3.5 text-right text-xs font-semibold uppercase tracking-wide text-slate-500">الموظف</th>
+                                <th className="hidden px-4 py-3.5 text-right text-xs font-semibold uppercase tracking-wide text-slate-500 md:table-cell">نوع الإجازة</th>
+                                <th className="px-4 py-3.5 text-right text-xs font-semibold uppercase tracking-wide text-slate-500">من</th>
+                                <th className="px-4 py-3.5 text-right text-xs font-semibold uppercase tracking-wide text-slate-500">إلى</th>
+                                <th className="hidden px-4 py-3.5 text-right text-xs font-semibold uppercase tracking-wide text-slate-500 sm:table-cell">الأيام</th>
+                                <th className="px-4 py-3.5 text-right text-xs font-semibold uppercase tracking-wide text-slate-500">الحالة</th>
+                                <th className="px-4 py-3.5"></th>
                             </tr>
                         </thead>
-                        <tbody className="divide-y divide-gray-100">
+                        <tbody className="divide-y divide-slate-100">
                             {requests.map((req: any) => (
-                                <tr key={req.id} className="hover:bg-gray-50">
+                                <tr key={req.id} className="transition-colors hover:bg-slate-50">
                                     <td className="px-4 py-3">
-                                        <div className="font-medium text-gray-900">{req.employee?.first_name} {req.employee?.last_name}</div>
-                                        <div className="text-xs text-gray-500">{req.employee?.department?.name}</div>
+                                        <div className="font-medium text-slate-900">{req.employee?.first_name} {req.employee?.last_name}</div>
+                                        <div className="text-xs text-slate-500">{req.employee?.department?.name}</div>
                                     </td>
-                                    <td className="px-4 py-3 text-gray-600 hidden md:table-cell">{req.leave_type?.name_ar ?? req.leave_type?.name}</td>
-                                    <td className="px-4 py-3 text-gray-600">{formatDate(req.start_date)}</td>
-                                    <td className="px-4 py-3 text-gray-600">{formatDate(req.end_date)}</td>
-                                    <td className="px-4 py-3 text-gray-600 hidden sm:table-cell">{req.total_days} يوم</td>
+                                    <td className="hidden px-4 py-3 text-slate-600 md:table-cell">{req.leave_type?.name_ar ?? req.leave_type?.name}</td>
+                                    <td className="px-4 py-3 text-slate-600">{formatDate(req.start_date)}</td>
+                                    <td className="px-4 py-3 text-slate-600">{formatDate(req.end_date)}</td>
+                                    <td className="hidden px-4 py-3 text-slate-600 sm:table-cell">{req.total_days} يوم</td>
                                     <td className="px-4 py-3">
-                                        <span className={`inline-flex px-2 py-1 rounded-full text-xs font-medium ${statusColors[req.status] ?? "bg-gray-100 text-gray-800"}`}>
+                                        <span className={`inline-flex rounded-full px-2.5 py-1 text-xs font-medium ${statusColors[req.status] ?? "bg-slate-100 text-slate-700"}`}>
                                             {statusLabels[req.status] ?? req.status}
                                         </span>
                                     </td>
                                     <td className="px-4 py-3">
                                         {req.status === "pending" && (
-                                            <div className="flex gap-1 justify-end">
+                                            <div className="flex justify-end gap-1">
                                                 <button
                                                     onClick={() => approveMutation.mutate(req.id)}
-                                                    className="p-1.5 text-green-600 hover:bg-green-50 rounded"
+                                                    className="rounded-lg p-2 text-green-600 transition-colors hover:bg-green-50"
                                                     title="موافقة"
                                                 >
-                                                    <Check size={15} />
+                                                    <Check size={16} />
                                                 </button>
                                                 <button
                                                     onClick={() => setRejectId(req.id)}
-                                                    className="p-1.5 text-red-600 hover:bg-red-50 rounded"
+                                                    className="rounded-lg p-2 text-red-600 transition-colors hover:bg-red-50"
                                                     title="رفض"
                                                 >
-                                                    <X size={15} />
+                                                    <X size={16} />
                                                 </button>
                                             </div>
                                         )}
@@ -156,11 +156,11 @@ export default function LeaveRequestsPage() {
                     </table>
                 )}
                 {meta.last_page > 1 && (
-                    <div className="flex items-center justify-between px-4 py-3 border-t">
-                        <span className="text-sm text-gray-600">{meta.from}-{meta.to} من {meta.total}</span>
+                    <div className="flex items-center justify-between border-t border-slate-100 px-4 py-3">
+                        <span className="text-sm text-slate-500">{meta.from}-{meta.to} من {meta.total}</span>
                         <div className="flex gap-2">
-                            <button disabled={page <= 1} onClick={() => setPage(p => p - 1)} className="px-3 py-1 border rounded text-sm disabled:opacity-40 hover:bg-gray-50">السابق</button>
-                            <button disabled={page >= meta.last_page} onClick={() => setPage(p => p + 1)} className="px-3 py-1 border rounded text-sm disabled:opacity-40 hover:bg-gray-50">التالي</button>
+                            <button disabled={page <= 1} onClick={() => setPage(p => p - 1)} className="rounded-lg border border-slate-300 px-3 py-1.5 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50 disabled:opacity-40">السابق</button>
+                            <button disabled={page >= meta.last_page} onClick={() => setPage(p => p + 1)} className="rounded-lg border border-slate-300 px-3 py-1.5 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50 disabled:opacity-40">التالي</button>
                         </div>
                     </div>
                 )}
@@ -168,12 +168,12 @@ export default function LeaveRequestsPage() {
 
             {/* New Request Modal */}
             {showForm && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40" dir="rtl">
-                    <div className="bg-white rounded-2xl shadow-xl w-full max-w-md p-6">
-                        <h2 className="text-lg font-bold mb-4">طلب إجازة جديد</h2>
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 p-4 backdrop-blur-sm" dir="rtl" onClick={() => setShowForm(false)}>
+                    <div className="w-full max-w-md rounded-2xl bg-white p-6 shadow-2xl" onClick={(e) => e.stopPropagation()}>
+                        <h2 className="mb-5 text-lg font-bold text-slate-900">طلب إجازة جديد</h2>
                         <form onSubmit={(e) => { e.preventDefault(); createMutation.mutate(form); }} className="space-y-4">
                             <div>
-                                <label className="block text-xs font-medium text-gray-600 mb-1">الموظف *</label>
+                                <label className="mb-1.5 block text-sm font-medium text-slate-700">الموظف *</label>
                                 <select required className={cls} value={form.employee_id} onChange={(e) => setForm(f => ({ ...f, employee_id: e.target.value }))}>
                                     <option value="">اختر موظف</option>
                                     {employees.map((emp: any) => (
@@ -182,7 +182,7 @@ export default function LeaveRequestsPage() {
                                 </select>
                             </div>
                             <div>
-                                <label className="block text-xs font-medium text-gray-600 mb-1">نوع الإجازة *</label>
+                                <label className="mb-1.5 block text-sm font-medium text-slate-700">نوع الإجازة *</label>
                                 <select required className={cls} value={form.leave_type_id} onChange={(e) => setForm(f => ({ ...f, leave_type_id: e.target.value }))}>
                                     <option value="">اختر النوع</option>
                                     {leaveTypes.map((lt: any) => (
@@ -192,21 +192,21 @@ export default function LeaveRequestsPage() {
                             </div>
                             <div className="grid grid-cols-2 gap-3">
                                 <div>
-                                    <label className="block text-xs font-medium text-gray-600 mb-1">من *</label>
+                                    <label className="mb-1.5 block text-sm font-medium text-slate-700">من *</label>
                                     <input type="date" required className={cls} value={form.start_date} onChange={(e) => setForm(f => ({ ...f, start_date: e.target.value }))} />
                                 </div>
                                 <div>
-                                    <label className="block text-xs font-medium text-gray-600 mb-1">إلى *</label>
+                                    <label className="mb-1.5 block text-sm font-medium text-slate-700">إلى *</label>
                                     <input type="date" required className={cls} value={form.end_date} onChange={(e) => setForm(f => ({ ...f, end_date: e.target.value }))} />
                                 </div>
                             </div>
                             <div>
-                                <label className="block text-xs font-medium text-gray-600 mb-1">السبب</label>
+                                <label className="mb-1.5 block text-sm font-medium text-slate-700">السبب</label>
                                 <textarea className={cls} rows={2} value={form.reason} onChange={(e) => setForm(f => ({ ...f, reason: e.target.value }))} />
                             </div>
-                            <div className="flex gap-3 justify-end">
-                                <button type="button" onClick={() => setShowForm(false)} className="px-5 py-2 border border-gray-300 rounded-lg text-sm hover:bg-gray-50">إلغاء</button>
-                                <button type="submit" disabled={createMutation.isPending} className="px-5 py-2 bg-blue-600 text-white rounded-lg text-sm hover:bg-blue-700 disabled:opacity-50">
+                            <div className="flex justify-end gap-3 pt-2">
+                                <button type="button" onClick={() => setShowForm(false)} className="btn-ghost">إلغاء</button>
+                                <button type="submit" disabled={createMutation.isPending} className="btn-primary">
                                     {createMutation.isPending ? "جاري الإرسال..." : "إرسال الطلب"}
                                 </button>
                             </div>
@@ -217,22 +217,22 @@ export default function LeaveRequestsPage() {
 
             {/* Reject Modal */}
             {rejectId && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40" dir="rtl">
-                    <div className="bg-white rounded-2xl shadow-xl w-full max-w-sm p-6">
-                        <h2 className="text-lg font-bold mb-4">سبب الرفض</h2>
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 p-4 backdrop-blur-sm" dir="rtl" onClick={() => { setRejectId(null); setRejectReason(""); }}>
+                    <div className="w-full max-w-sm rounded-2xl bg-white p-6 shadow-2xl" onClick={(e) => e.stopPropagation()}>
+                        <h2 className="mb-4 text-lg font-bold text-slate-900">سبب الرفض</h2>
                         <textarea
-                            className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            className="input"
                             rows={3}
                             placeholder="أدخل سبب الرفض..."
                             value={rejectReason}
                             onChange={(e) => setRejectReason(e.target.value)}
                         />
-                        <div className="flex gap-3 justify-end mt-4">
-                            <button onClick={() => { setRejectId(null); setRejectReason(""); }} className="px-5 py-2 border border-gray-300 rounded-lg text-sm hover:bg-gray-50">إلغاء</button>
+                        <div className="mt-4 flex justify-end gap-3">
+                            <button onClick={() => { setRejectId(null); setRejectReason(""); }} className="btn-ghost">إلغاء</button>
                             <button
                                 disabled={!rejectReason.trim() || rejectMutation.isPending}
                                 onClick={() => rejectMutation.mutate({ id: rejectId, reason: rejectReason })}
-                                className="px-5 py-2 bg-red-600 text-white rounded-lg text-sm hover:bg-red-700 disabled:opacity-50"
+                                className="inline-flex items-center justify-center gap-2 rounded-xl bg-red-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition-all hover:bg-red-700 active:scale-[.98] disabled:opacity-50"
                             >
                                 {rejectMutation.isPending ? "جاري الرفض..." : "رفض الطلب"}
                             </button>
