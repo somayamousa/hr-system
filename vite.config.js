@@ -9,10 +9,14 @@ export default defineConfig({
             input: ['resources/css/app.css', 'resources/js/app.tsx'],
             refresh: true,
         }),
-        tailwindcss(),
         react(),
+        tailwindcss(),
     ],
     server: {
+        host: 'localhost',
+        hmr: {
+            host: 'localhost',
+        },
         watch: {
             ignored: ['**/storage/framework/views/**'],
         },

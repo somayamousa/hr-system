@@ -1,15 +1,77 @@
 @import 'tailwindcss';
 
-@theme {
-    --font-sans: 'Cairo', ui-sans-serif, system-ui, sans-serif;
-}
-
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../storage/framework/views/*.php';
 @source '../**/*.blade.php';
 @source '../**/*.js';
 
 @theme {
-    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+    --font-sans: 'Cairo', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
         'Segoe UI Symbol', 'Noto Color Emoji';
+
+    --color-brand-50: #eef4ff;
+    --color-brand-100: #d9e6ff;
+    --color-brand-200: #bcd3ff;
+    --color-brand-300: #8eb6ff;
+    --color-brand-400: #598dff;
+    --color-brand-500: #3366ff;
+    --color-brand-600: #1f47f5;
+    --color-brand-700: #1737e1;
+    --color-brand-800: #1a2fb6;
+    --color-brand-900: #1c2e8f;
+}
+
+@layer base {
+    body {
+        @apply bg-slate-50 text-slate-800 antialiased;
+        font-feature-settings: 'ss01';
+    }
+
+    /* Smooth custom scrollbar */
+    ::-webkit-scrollbar {
+        width: 10px;
+        height: 10px;
+    }
+    ::-webkit-scrollbar-track {
+        background: transparent;
+    }
+    ::-webkit-scrollbar-thumb {
+        background: #cbd5e1;
+        border-radius: 9999px;
+        border: 2px solid transparent;
+        background-clip: content-box;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+        background: #94a3b8;
+        background-clip: content-box;
+    }
+}
+
+@layer components {
+    /* Reusable card */
+    .card {
+        @apply bg-white rounded-2xl shadow-sm ring-1 ring-slate-200/70;
+    }
+
+    /* Primary button */
+    .btn-primary {
+        @apply inline-flex items-center justify-center gap-2 rounded-xl bg-brand-600 px-4 py-2.5
+               text-sm font-semibold text-white shadow-sm transition-all
+               hover:bg-brand-700 hover:shadow-md active:scale-[.98]
+               disabled:opacity-50 disabled:pointer-events-none;
+    }
+
+    /* Secondary / outline button */
+    .btn-ghost {
+        @apply inline-flex items-center justify-center gap-2 rounded-xl border border-slate-300
+               bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 transition-all
+               hover:bg-slate-50 active:scale-[.98] disabled:opacity-40 disabled:pointer-events-none;
+    }
+
+    /* Form input */
+    .input {
+        @apply w-full rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm text-slate-800
+               placeholder:text-slate-400 transition-shadow
+               focus:outline-none focus:ring-2 focus:ring-brand-500/40 focus:border-brand-500;
+    }
 }
