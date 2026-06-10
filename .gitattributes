@@ -9,3 +9,11 @@
 /.github export-ignore
 CHANGELOG.md export-ignore
 .styleci.yml export-ignore
+
+# Language statistics (linguist)
+resources/js/**     linguist-detectable=true
+resources/css/**    linguist-detectable=true
+*.tsx               linguist-detectable=true
+*.ts                linguist-detectable=true
+composer.lock       linguist-generated=true
+package-lock.json   linguist-generated=true
