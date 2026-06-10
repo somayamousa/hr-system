@@ -22,14 +22,14 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('documents', DocumentController::class);
     Route::get('documents/{document}/download', [DocumentController::class, 'download']);
 
-    Route::apiResource('attendance', AttendanceController::class);
     Route::post('attendance/bulk', [AttendanceController::class, 'bulk']);
     Route::get('attendance/summary', [AttendanceController::class, 'summary']);
+    Route::apiResource('attendance', AttendanceController::class);
 
+    Route::get('leave-requests/balance', [LeaveRequestController::class, 'balance']);
     Route::apiResource('leave-requests', LeaveRequestController::class);
     Route::post('leave-requests/{leaveRequest}/approve', [LeaveRequestController::class, 'approve']);
     Route::post('leave-requests/{leaveRequest}/reject', [LeaveRequestController::class, 'reject']);
-    Route::get('leave-requests/balance', [LeaveRequestController::class, 'balance']);
 
     Route::apiResource('leave-types', LeaveTypeController::class);
 });
